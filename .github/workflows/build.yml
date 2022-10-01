@@ -1,8 +1,5 @@
 name: push
-on:
-  push:
-    tags:
-      - "v*"
+on:push
 
 jobs:
   windows-build:
@@ -25,7 +22,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: sample-windows
-          path: dist/sample.exe
+          path: dist/main.exe
 
   macOS-build:
     runs-on: macOS-latest
@@ -47,7 +44,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: sample-macos
-          path: dist/sample
+          path: dist/main
 
   ubuntu-build:
     runs-on: ubuntu-latest
@@ -70,7 +67,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: sample-linux
-          path: dist/sample
+          path: dist/main
 
   release:
     needs: [ubuntu-build, macOS-build, windows-build]
@@ -96,7 +93,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
@@ -111,7 +108,7 @@ jobs:
       - name: Append Binary
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./sample-macos.tar.gz
@@ -121,7 +118,7 @@ jobs:
       - name: Append Binary
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./sample-linux.tar.gz
@@ -131,7 +128,7 @@ jobs:
       - name: Append Binary
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets._GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./sample-windows.zip
