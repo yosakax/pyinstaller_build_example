@@ -102,9 +102,10 @@ jobs:
 
       - name: Zip
         run: |
-          tar -C sample-macos -pczvf sample-macos.tar.gz sample
-          tar -C sample-linux -pczvf sample-linux.tar.gz sample
-          zip --junk-paths sample-windows ./sample-windows/sample.exe
+          ls ./
+          tar -C sample-macos -pczvf sample-macos.tar.gz main
+          tar -C sample-linux -pczvf sample-linux.tar.gz main
+          zip --junk-paths sample-windows ./sample-windows/main.exe
       - name: Append Binary
         uses: actions/upload-release-asset@v1
         env:
